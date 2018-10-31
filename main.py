@@ -1,7 +1,9 @@
 from flask import request, redirect, render_template, session, flash
 import sqlalchemy
+import requests
 
 from app import app, db
+from models import User
 from hashutils import check_pw_hash
 
 
@@ -102,6 +104,25 @@ def login():
         else:
             flash("Either you mistyped your username or you don't have an account.", 'negative')
             return render_template('login.html')
+
+
+@app.route('''/route-name''', methods=['POST', 'GET'])
+def route_function():
+
+    # example method to query API
+    search_query = request.form['search']
+    search_query = search_query.replace(" ","+")
+    api = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?instructionsRequired=true&number=20&query="
+    url = api + search_query
+    headers={
+        "X-Mashape-Key": ,# API key goes here, variable or actual key
+        "Accept": "application/json"
+        }
+
+    # JSON data back from API
+    json_data = requests.get(url, headers=headers).json()
+
+    return render_template('search.html', template_variable=json_data)
 
 
 
