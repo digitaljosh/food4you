@@ -12,7 +12,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://food4you:food4yo
 #app.config['SQLALCHEMY_DATABASE_URI'] = josh_db_connect
 
 
-app.secret_key = shhh
+app.secret_key = 'shhh,dont_tellanyone44329'
 
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['DEBUG'] = True

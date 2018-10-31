@@ -19,13 +19,13 @@ def login_required():
 # Landing page
 @app.route("/")
 def index():
-    return render_template(''' [enter .html file ] ''')
+    return render_template('home.html')
 
 # Sign up page
-@app.route('/sign-up', methods=['GET', 'POST'])
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'GET':
-        return render_template('/sign-up.html')
+        return render_template('signup.html')
     elif request.method == 'POST':
         
         # Get form data
@@ -40,13 +40,13 @@ def signup():
         # Sign up validation
         if user_with_same_name > 0:
             flash("Someone is already using that name", 'negative')
-            return render_template(''' enter template, example: 'sign-up.html' ''')
+            return render_template('signup.html')
         elif len(p_word) < 6 or len(p_word) > 20:
             flash("Passwords must be at least 6 chars long, 20 at most.", "negative")
-            return render_template(''' enter html and template variables, example: 'sign-up.html', username=name ''')
+            return render_template('signup.html', username=name)
         elif p_word != con_pword:
             flash("Passwords don't match!", 'negative')
-            return render_template(''' example: 'sign-up.html', username=name, email=email ''')
+            return render_template('signup.html', username=name, email=email)
 
         else:
             # everything entered correctly we instantiate instance of new User class 
@@ -64,7 +64,7 @@ def signup():
             # set current session
             session['username'] = new_user.username
             
-            return render_template(''' enter html and template variables, example: 'full-calendar.html', user=User.getUserByName(session['username']) ''')
+            return render_template('full-calendar.html', user=User.getUserByName(session['username']))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -81,10 +81,10 @@ def login():
                 return render_template('full-calendar.html', user=User.getUserByName(name), recipes=recipes)
         # if errors occur, except block handles it
         except KeyError:
-            return render_template('template-name.html')
+            return render_template('login.html')
         except AttributeError: # no one in db yet NoneType
             flash("This is your first rodeo", 'negative')
-            return render_template('template-name.html')
+            return render_template('login.html')
 
     # if no user in session, send login credentials to server to login 
     elif request.method == 'POST':
@@ -106,23 +106,29 @@ def login():
             return render_template('login.html')
 
 
-@app.route('''/route-name''', methods=['POST', 'GET'])
-def route_function():
+@app.route('/search', methods=['POST', 'GET'])
+def search_function():
 
-    # example method to query API
-    search_query = request.form['search']
-    search_query = search_query.replace(" ","+")
-    api = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?instructionsRequired=true&number=20&query="
-    url = api + search_query
-    headers={
-        "X-Mashape-Key": ,# API key goes here, variable or actual key
-        "Accept": "application/json"
-        }
+    if request.method == 'POST':
 
-    # JSON data back from API
-    json_data = requests.get(url, headers=headers).json()
+        # example method to query API
+        search_query = request.form['search']
+        search_query = search_query.replace(" ","+")
+        api = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?instructionsRequired=true&number=20&query="
+        url = api + search_query
+        '''headers={
+            "X-Mashape-Key": , # API key goes here, variable or actual key
+            "Accept": "application/json"
+            }'''
 
-    return render_template('search.html', template_variable=json_data)
+        # JSON data back from API
+        json_data = requests.get(url, headers=headers).json()
+
+        return render_template('search.html', template_variable=json_data)
+
+    # GET request
+    else: 
+        return render_template('search.html')
 
 
 
