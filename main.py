@@ -21,6 +21,13 @@ def login_required():
 def index():
     return render_template('home.html')
 
+
+# React example page
+@app.route("/react")
+def react_example():
+    return render_template('react-test.html')
+
+
 # Sign up page
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
