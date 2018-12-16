@@ -121,15 +121,19 @@ def search_function():
         # example method to query API
         search_query = request.form['search']
         search_query = search_query.replace(" ","+")
-        api = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?instructionsRequired=true&number=20&query="
-        url = api + search_query
+        
+        api = "http://supermarketownbrandguide.co.uk/api/newfeed.php?json=search&q="
+        append = "&page=0&apikey=3wwbjwb2i7v31yqd9ipx"
+        url = api + search_query + append
+        
         '''headers={
-            "X-Mashape-Key": , # API key goes here, variable or actual key
+            "X-Mashape-Key": ,
             "Accept": "application/json"
             }'''
 
         # JSON data back from API
-        json_data = requests.get(url, headers=headers).json()
+        json_data = requests.get(url).json()
+        print(json_data)
 
         return render_template('search.html', template_variable=json_data)
 
